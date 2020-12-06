@@ -68,12 +68,12 @@ def pathstat(path, verbose=False):
     for key in sorted(results.keys(), key=lambda x: str(x)):
         if isinstance(key, int):
             name = dtype_dict[key]
+            print(name + ':', results[key])
+        else:
             if name.startswith("bytes_"):
                 print(name + ':', results[key], str(round(results[key] / 1024 / 1024), 2) + "MB")
             else:
-                print(name + ':', results[key])
-        else:
-            print(key + ':', results[key])
+                print(key + ':', results[key])
 
 
 @click.command()
