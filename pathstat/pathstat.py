@@ -82,7 +82,7 @@ def cli(path,
 
     if verbose:
         ic(results)
-    for key in results.keys():
+    for key in sorted(results.keys()):
         if isinstance(key, int):
             name = dtype_dict[key]
             print(name, results[key])
