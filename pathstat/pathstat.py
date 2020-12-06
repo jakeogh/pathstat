@@ -45,6 +45,31 @@ from getdents._getdents import (DT_BLK, DT_CHR, DT_DIR,  # noqa: ignore=F401
 # import pdb; pdb.set_trace()
 # from pudb import set_trace; set_trace(paused=False)
 
+def pathstat(path, verbose=False):
+    dtype_dict = {6:"DT_BLK",
+                  2:"DT_CHR",
+                  4:"DT_DIR",
+                  1:"DT_FIFO",
+                  10:"DT_LNK",
+                  8:"DT_REG",
+                  12:"DT_SOCK",
+                  0:"DT_UNKNOWN",}
+    results = defaultdict(int)
+    path = Path(path)
+    ic(path)
+    for item in paths(path):
+        ic(item)
+        results[item.dtype] += 1
+        results['bytes_in_names'] += len(item.name) + 1  # include NULL
+
+    if verbose:
+        ic(results)
+    for key in sorted(results.keys(), key=lambda x: str(x)):
+        if isinstance(key, int):
+            name = dtype_dict[key]
+            print(name, results[key])
+        else:
+            print(key,  results[key])
 
 
 @click.command()
@@ -63,28 +88,4 @@ def cli(path,
         verbose,
         debug,):
 
-    dtype_dict = {6:"DT_BLK",
-                  2:"DT_CHR",
-                  4:"DT_DIR",
-                  1:"DT_FIFO",
-                  10:"DT_LNK",
-                  8:"DT_REG",
-                  12:"DT_SOCK",
-                  0:"DT_UNKNOWN",}
-
-    results = defaultdict(int)
-    path = Path(path)
-    ic(path)
-    for item in paths(path):
-        ic(item)
-        results[item.dtype] += 1
-        results['bytes_in_names'] += len(item.name) + 1  # include NULL
-
-    if verbose:
-        ic(results)
-    for key in sorted(results.keys(), key=lambda x: str(x)):
-        if isinstance(key, int):
-            name = dtype_dict[key]
-            print(name, results[key])
-        else:
-            print(key,  results[key])
+    pathstat(path=path, verbose=erbose)
