@@ -45,7 +45,7 @@ from getdents._getdents import (DT_BLK, DT_CHR, DT_DIR,  # noqa: ignore=F401
 # import pdb; pdb.set_trace()
 # from pudb import set_trace; set_trace(paused=False)
 
-def pathstat(path, verbose=False):
+def display_results(results, verbose=False):
     dtype_dict = {6: "DT_BLK",
                   2: "DT_CHR",
                   4: "DT_DIR",
@@ -54,15 +54,6 @@ def pathstat(path, verbose=False):
                   8: "DT_REG",
                   12: "DT_SOCK",
                   0: "DT_UNKNOWN",}
-    results = defaultdict(int)
-    path = Path(path)
-    ic(path)
-    for item in paths(path):
-        if verbose:
-            ic(item)
-        results[item.dtype] += 1
-        results['bytes_in_names'] += len(item.name) + 1  # include NULL
-
     if verbose:
         ic(results)
     for key in sorted(results.keys(), key=lambda x: str(x)):
@@ -74,6 +65,18 @@ def pathstat(path, verbose=False):
                 print(key + ':', results[key], str(round(results[key] / 1024 / 1024), 2) + "MB")
             else:
                 print(key + ':', results[key])
+
+
+def pathstat(path, verbose=False):
+    results = defaultdict(int)
+    path = Path(path)
+    ic(path)
+    for item in paths(path):
+        if verbose:
+            ic(item)
+        results[item.dtype] += 1
+        results['bytes_in_names'] += len(item.name) + 1  # include NULL
+    return results
 
 
 @click.command()
@@ -92,4 +95,5 @@ def cli(path,
         verbose,
         debug,):
 
-    pathstat(path=path, verbose=verbose)
+    results = pathstat(path=path, verbose=verbose)
+    display_results(results, verbose=verbose)
