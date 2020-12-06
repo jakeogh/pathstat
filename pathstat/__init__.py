@@ -1,1 +1,1 @@
-from .pathstat import pathstat
+from .pathstat import display_results, pathstat
