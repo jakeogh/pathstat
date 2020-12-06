@@ -88,4 +88,4 @@ def cli(path,
         verbose,
         debug,):
 
-    pathstat(path=path, verbose=erbose)
+    pathstat(path=path, verbose=verbose)
