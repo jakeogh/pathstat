@@ -39,9 +39,8 @@ except ImportError:
 
 from enumerate_input import enumerate_input
 from getdents import paths
-
-from ._getdents import (DT_BLK, DT_CHR, DT_DIR, DT_FIFO,  # noqa: ignore=F401
-                        DT_LNK, DT_REG, DT_SOCK, DT_UNKNOWN)
+from getdents._getdents import (DT_BLK, DT_CHR, DT_DIR,  # noqa: ignore=F401
+                                DT_FIFO, DT_LNK, DT_REG, DT_SOCK, DT_UNKNOWN)
 
 # import pdb; pdb.set_trace()
 # from pudb import set_trace; set_trace(paused=False)
