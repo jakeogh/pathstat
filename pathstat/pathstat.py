@@ -46,19 +46,20 @@ from getdents._getdents import (DT_BLK, DT_CHR, DT_DIR,  # noqa: ignore=F401
 # from pudb import set_trace; set_trace(paused=False)
 
 def pathstat(path, verbose=False):
-    dtype_dict = {6:"DT_BLK",
-                  2:"DT_CHR",
-                  4:"DT_DIR",
-                  1:"DT_FIFO",
-                  10:"DT_LNK",
-                  8:"DT_REG",
-                  12:"DT_SOCK",
-                  0:"DT_UNKNOWN",}
+    dtype_dict = {6: "DT_BLK",
+                  2: "DT_CHR",
+                  4: "DT_DIR",
+                  1: "DT_FIFO",
+                  10: "DT_LNK",
+                  8: "DT_REG",
+                  12: "DT_SOCK",
+                  0: "DT_UNKNOWN",}
     results = defaultdict(int)
     path = Path(path)
     ic(path)
     for item in paths(path):
-        ic(item)
+        if verbose:
+            ic(item)
         results[item.dtype] += 1
         results['bytes_in_names'] += len(item.name) + 1  # include NULL
 
@@ -67,9 +68,12 @@ def pathstat(path, verbose=False):
     for key in sorted(results.keys(), key=lambda x: str(x)):
         if isinstance(key, int):
             name = dtype_dict[key]
-            print(name, results[key])
+            if name.startswith("bytes_"):
+                print(name + ':', results[key], str(round(results[key] / 1024 / 1024), 2) + "MB")
+            else:
+                print(name + ':', results[key])
         else:
-            print(key,  results[key])
+            print(key + ':', results[key])
 
 
 @click.command()
