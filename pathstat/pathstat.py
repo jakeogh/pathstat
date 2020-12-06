@@ -20,6 +20,7 @@
 
 import os
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 import click
@@ -62,7 +63,11 @@ def cli(path,
         verbose,
         debug,):
 
+    results = defaultdict(int)
     path = Path(path)
     ic(path)
     for item in paths(path):
         ic(item)
+        results[item.dtype] += 1
+
+    ic(results)
