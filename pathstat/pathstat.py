@@ -70,8 +70,8 @@ def pathstat(path, verbose=False):
             name = dtype_dict[key]
             print(name + ':', results[key])
         else:
-            if name.startswith("bytes_"):
-                print(name + ':', results[key], str(round(results[key] / 1024 / 1024), 2) + "MB")
+            if key.startswith("bytes_"):
+                print(key + ':', results[key], str(round(results[key] / 1024 / 1024), 2) + "MB")
             else:
                 print(key + ':', results[key])
 
