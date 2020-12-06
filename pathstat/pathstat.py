@@ -46,6 +46,8 @@ from getdents._getdents import (DT_BLK, DT_CHR, DT_DIR,  # noqa: ignore=F401
 # from pudb import set_trace; set_trace(paused=False)
 
 def display_results(results, verbose=False):
+    if verbose:
+        ic(results)
     dtype_dict = {6: "DT_BLK",
                   2: "DT_CHR",
                   4: "DT_DIR",
@@ -54,8 +56,6 @@ def display_results(results, verbose=False):
                   8: "DT_REG",
                   12: "DT_SOCK",
                   0: "DT_UNKNOWN",}
-    if verbose:
-        ic(results)
     for key in sorted(results.keys(), key=lambda x: str(x)):
         if isinstance(key, int):
             name = dtype_dict[key]
