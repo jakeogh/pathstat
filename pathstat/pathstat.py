@@ -69,5 +69,6 @@ def cli(path,
     for item in paths(path):
         ic(item)
         results[item.dtype] += 1
+        results['bytes_in_names'] += len(item.name) + 1  # include NULL
 
     ic(results)
