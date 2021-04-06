@@ -39,8 +39,14 @@ except ImportError:
 
 
 from getdents import paths
-from getdents._getdents import (DT_BLK, DT_CHR, DT_DIR,  # noqa: ignore=F401
-                                DT_FIFO, DT_LNK, DT_REG, DT_SOCK, DT_UNKNOWN)
+from getdents._getdents import DT_BLK  # noqa: ignore=F401
+from getdents._getdents import DT_CHR
+from getdents._getdents import DT_DIR
+from getdents._getdents import DT_FIFO
+from getdents._getdents import DT_LNK
+from getdents._getdents import DT_REG
+from getdents._getdents import DT_SOCK
+from getdents._getdents import DT_UNKNOWN
 
 # import pdb; pdb.set_trace()
 # from pudb import set_trace; set_trace(paused=False)
@@ -71,11 +77,13 @@ def display_results(results, verbose=False):
                 print(key + ':', results[key])
 
 
-def pathstat(path, verbose=False):
+def pathstat(path: str,
+             verbose: bool = False,
+             debug: bool = False):
     results = defaultdict(int)
     path = Path(path)
     ic(path)
-    for item in paths(path):
+    for item in paths(path, verbose=verbose, debug=debug,):
         if verbose:
             ic(item)
         results[item.dtype] += 1
@@ -95,9 +103,9 @@ def pathstat(path, verbose=False):
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 #@click.group()
-def cli(path,
-        verbose,
-        debug,):
+def cli(path: str,
+        verbose: bool,
+        debug: bool,):
 
     results = pathstat(path=path, verbose=verbose)
     display_results(results, verbose=verbose)
